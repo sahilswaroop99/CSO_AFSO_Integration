@@ -826,7 +826,39 @@ page 50203 "AF Sales Order"
                     }
                 }
             }
+            group("Counter Sales Transfer ")
+            {
+                Caption = 'Counter Sales';
+                Image = Sales;
+
+                action(MoveToCounterSales)
+                {
+                    Caption = 'Move to Counter Sales';
+                    ApplicationArea = All;
+                    Image = SalesShipment;
+                    ToolTip = 'Moves the order details to the Counter Sales Order for processing.';
+
+                    trigger OnAction()
+                    var
+
+                        AFOrderHeader: Record "Sales Header";
+                        AFOrderLine: Record "Sales Line";
+                    begin
+                        if not AFOrderHeader.Get(Rec."No.") then
+                            Error('Sales Order not found.');
+                        //  Update the Sales Order Type or Status to Counter Sales Order
+                        AFOrderHeader."Document Type" := AFOrderHeader."Document Type"::Order;  // Ensure it's an Order
+                                                                                                //  AFOrderHeader."Order Type" := 'Counter Sales'; // Assuming you have a field to differentiate (replace with actual field name)
+                        AFOrderHeader."External Document No." := 'Counter Sales';
+                        AFOrderHeader.Modify();
+                        //  Open Counter Sales Order Page for review
+                        Page.Run(Page::"IWX POS Sales Order", AFOrderHeader);
+                    end;
+                }
+            }
+
         }
+
         area(reporting)
         {
             action("Drop Shipment Status")

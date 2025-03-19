@@ -1,3 +1,4 @@
+
 pageextension 50203 "AFSalesOrder Stats." extends "Sales Order Stats."
 {
     layout
