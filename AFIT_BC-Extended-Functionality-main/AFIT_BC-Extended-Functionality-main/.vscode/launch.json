@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Microsoft cloud sandbox",
+      "request": "launch",
+      "type": "al",
+      "environmentType": "Sandbox",
+      "environmentName": "AUTOFIT-SANDBOX",
+      "server": "https://businesscentral.dynamics.com/2c4a56c5-70ec-4870-afb6-dd7f5bae57f5/AUTOFIT-SANDBOX",
+      "tenant": "2c4a56c5-70ec-4870-afb6-dd7f5bae57f5",
+      "breakOnError": "All",
+    "startupObjectType": "Page",
+    "startupObjectId": 50203,
+      "launchBrowser": true,  
+      "enableLongRunningSqlStatements": true,
+      "enableSqlInformationDebugger": true
+    }
+  ]
+}
