@@ -1,0 +1,9 @@
+{
+    "al.enableCodeAnalysis": false,
+    "al.codeAnalyzers": [
+        "${UICop}",
+        "${PerTenantExtensionCop}"
+    ],
+    "CRS.FileNamePattern": "<ObjectTypeShort><ObjectId>.<ObjectNameShort>.al",
+    "CRS.FileNamePatternExtensions": "<ObjectTypeShort>-Ext<ObjectId>.<ObjectNameShort>.al"
+}
