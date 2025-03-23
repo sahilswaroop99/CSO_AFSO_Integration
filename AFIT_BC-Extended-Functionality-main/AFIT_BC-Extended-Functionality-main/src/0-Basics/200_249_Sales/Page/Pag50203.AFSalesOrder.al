@@ -1,7 +1,8 @@
 page 50203 "AF Sales Order"
 {
     Caption = 'AutoFit Sales Order';
-    PageType = ListPlus;
+    // PageType = ListPlus;
+    PageType = Document;
     RefreshOnActivate = true;
     SourceTable = "Sales Header";
     SourceTableView = where("Document Type" = filter(Order));
@@ -355,8 +356,40 @@ page 50203 "AF Sales Order"
                     ToolTip = 'View or add comments for the record.';
                 }
 
-            }
 
+            }
+            //Atul
+            group(Payment)
+            {
+                Caption = 'Payment';
+                Image = Payment;
+                action(aPayments)
+                {
+                    Caption = 'Payments';
+                    ApplicationArea = Basic, Suite, All;
+                    Image = Payment;
+                    RunObject = page "IWX POS Payment Processing PL";
+                    RunPageLink = "Customer No." = field("Bill-to Customer No.");
+                }
+                action(aTakeDeposit)
+                {
+                    Caption = 'Take Deposit';
+                    ApplicationArea = Basic, Suite, All;
+                    Image = Payment;
+                    RunObject = page "IWX POS Deposit Processing PL";
+                    RunPageLink = "Customer No." = field("Bill-to Customer No.");
+                }
+                action(aShowDeposits)
+                {
+                    Caption = 'Show Deposits';
+                    ApplicationArea = Basic, Suite, All;
+                    Image = Payment;
+                    RunObject = page "IWX POS Deposits";
+                    
+                    RunPageLink = "Bill-to Customer No." = field("Bill-to Customer No.");
+                }
+            }
+            //Atul
             group(Documents)
             {
                 Caption = 'Documents';
@@ -651,7 +684,6 @@ page 50203 "AF Sales Order"
                     end;
                 }
             }
-
             group("P&osting")
             {
                 Caption = 'P&osting';
@@ -886,6 +918,7 @@ page 50203 "AF Sales Order"
                     REPORT.RunModal(REPORT::"Picking List by Order", true, false, SalesHeader);
                 end;
             }
+
         }
         area(Promoted)
         {
@@ -928,6 +961,21 @@ page 50203 "AF Sales Order"
                 {
                 }
             }
+            //Atul
+            group(Payments)
+            {
+                Caption = 'Payment';
+                actionref(aPayments_Promoted; aPayments)
+                {
+                }
+                actionref(aTakeDeposit_Promoted; aTakeDeposit)
+                {
+                }
+                actionref(aShowDeposits_Promoted; aShowDeposits)
+                {
+                }
+            }
+            //Atul
             group(Category_Category7)
             {
                 Caption = 'Prepare', Comment = 'Generated from the PromotedActionCategories property index 6.';
@@ -1269,6 +1317,7 @@ page 50203 "AF Sales Order"
         DocumentIsPosted: Boolean;
         ShowQuoteNo: Boolean;
         Test: page 23044701;
+        Test1: Page 23044751;
 
     local procedure ActivateFields()
     begin
