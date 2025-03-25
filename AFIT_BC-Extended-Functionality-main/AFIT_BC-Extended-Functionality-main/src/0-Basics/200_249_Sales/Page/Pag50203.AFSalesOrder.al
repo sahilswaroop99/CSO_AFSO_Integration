@@ -358,7 +358,7 @@ page 50203 "AF Sales Order"
 
 
             }
-            //Atul
+            //AK
             group(Payment)
             {
                 Caption = 'Payment';
@@ -385,11 +385,26 @@ page 50203 "AF Sales Order"
                     ApplicationArea = Basic, Suite, All;
                     Image = Payment;
                     RunObject = page "IWX POS Deposits";
-                    
+
                     RunPageLink = "Bill-to Customer No." = field("Bill-to Customer No.");
                 }
             }
-            //Atul
+            //SS
+            group("Counter Sales Transfer ")
+            {
+                Caption = 'Counter Sales';
+                Image = Sales;
+
+                action(aMoveToCounterSales)
+                {
+                    Caption = 'Move to Counter Sales';
+                    ApplicationArea = All;
+                    Image = SalesShipment;
+                    ToolTip = 'Moves the order details to the Counter Sales Order for processing.';
+                    RunObject = page "IWX POS Sales Order";
+                    RunPageLink = "Bill-to Customer No." = field("Bill-to Customer No.");
+                }
+            }
             group(Documents)
             {
                 Caption = 'Documents';
@@ -858,37 +873,6 @@ page 50203 "AF Sales Order"
                     }
                 }
             }
-            group("Counter Sales Transfer ")
-            {
-                Caption = 'Counter Sales';
-                Image = Sales;
-
-                action(MoveToCounterSales)
-                {
-                    Caption = 'Move to Counter Sales';
-                    ApplicationArea = All;
-                    Image = SalesShipment;
-                    ToolTip = 'Moves the order details to the Counter Sales Order for processing.';
-
-                    trigger OnAction()
-                    var
-
-                        AFOrderHeader: Record "Sales Header";
-                        AFOrderLine: Record "Sales Line";
-                    begin
-                        if not AFOrderHeader.Get(Rec."No.") then
-                            Error('Sales Order not found.');
-                        //  Update the Sales Order Type or Status to Counter Sales Order
-                        AFOrderHeader."Document Type" := AFOrderHeader."Document Type"::Order;  // Ensure it's an Order
-                                                                                                //  AFOrderHeader."Order Type" := 'Counter Sales'; // Assuming you have a field to differentiate (replace with actual field name)
-                        AFOrderHeader."External Document No." := 'Counter Sales';
-                        AFOrderHeader.Modify();
-                        //  Open Counter Sales Order Page for review
-                        Page.Run(Page::"IWX POS Sales Order", AFOrderHeader);
-                    end;
-                }
-            }
-
         }
 
         area(reporting)
@@ -961,7 +945,7 @@ page 50203 "AF Sales Order"
                 {
                 }
             }
-            //Atul
+            //AK
             group(Payments)
             {
                 Caption = 'Payment';
@@ -975,7 +959,17 @@ page 50203 "AF Sales Order"
                 {
                 }
             }
-            //Atul
+            //SS
+            group(CS_Submit)
+            {
+                Caption = 'CS Submit';
+                actionref(aaMoveToCounterSales_Promoted; aMoveToCounterSales)
+                {
+                }
+
+            }
+            // 
+
             group(Category_Category7)
             {
                 Caption = 'Prepare', Comment = 'Generated from the PromotedActionCategories property index 6.';
