@@ -19,16 +19,7 @@ page 50206 "AF SalesOrder Item Search"
             group(Filters)
             {
                 ShowCaption = false;
-                field(Make; Rec.Make)
-                {
-                    ApplicationArea = all;
-                    trigger OnValidate()
-                    begin
-                        Rec.Model := '';
-                    end;
-                }
-                field(Model; Rec.Model)
-                { ApplicationArea = all; }
+                //////////////////////SS Reordered but need code change so that it stops retrieving info first from Make
                 field(Year; Rec.Year)
                 {
                     trigger OnValidate()
@@ -45,6 +36,21 @@ page 50206 "AF SalesOrder Item Search"
                         end;
                     end;
                 }
+                ///////////////SS
+                field(Make; Rec.Make)
+                {
+                    ApplicationArea = all;
+                    //SS  
+                    /*
+                    trigger OnValidate()
+                    begin
+                        Rec.Model := '';
+                    end;
+                    */
+                }
+                field(Model; Rec.Model)
+                { ApplicationArea = all; }
+
                 field(PartNumber; Rec.PartNumber)
                 {
                     //ShowCaption = false;
@@ -216,7 +222,7 @@ page 50206 "AF SalesOrder Item Search"
         AFSalesItemFilter.SearchStatus := SearchStatus;
         AFSalesItemFilter.PartNumber := Rec.PartNumber;
         AFSalesItemFilter.Modify();
-        //if AFOrderItemBuff.Get(SalesHdr."No.") then;
+
     end;
 
     local procedure InsertOrderItem(pItem: Record Item)

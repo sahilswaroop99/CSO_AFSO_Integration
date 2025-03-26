@@ -209,7 +209,24 @@ page 50203 "AF Sales Order"
                             IsShipToCountyVisible := FormatAddress.UseCounty(Rec."Ship-to Country/Region Code");
                         end;
                     }
-
+                    //SS
+                    field("Customer Comment"; Rec."Customer Comment")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Customer Comment';
+                        Importance = Additional;
+                        QuickEntry = false;
+                        ToolTip = 'Specifies additional Customer Specific information given by the customer';
+                    }
+                    field("Business Hours"; Rec."Business Hours")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Business Hours';
+                        Importance = Additional;
+                        QuickEntry = false;
+                        ToolTip = 'Specifies additional Customer Specific information given by the customer';
+                    }
+                    //SS
                 }
 
 
