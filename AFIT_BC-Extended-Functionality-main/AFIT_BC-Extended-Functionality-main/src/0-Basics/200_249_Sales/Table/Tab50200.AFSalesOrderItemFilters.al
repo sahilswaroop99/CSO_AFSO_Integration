@@ -13,21 +13,18 @@ table 50200 "AF SalesOrder Item Filters"
         {
             TableRelation = "AF Vehicle Make";
         }
-        field(3; Model; Code[20])
+        field(3; Model; Code[20])//Atul
         {
-            TableRelation = "AF Vehicle Model".Model where("Make" = field("Make"));
+            TableRelation = "AF Vehicle Model";
         }
-        field(4; Year; code[4])
+        field(4; Year; code[4])//Atul
         {
-            TableRelation = if (Model = filter('')) AFMakeModelYearLookup.Year where("Make" = field("Make"))
-            else
-            AFMakeModelYearLookup.Year where("Make" = field("Make"), Model = field(Model));
-
+            TableRelation = AFMakeModelYearLookup.Year;
             ValidateTableRelation = false;
         }
         field(6; PartNumber; Code[35])
         {
-
+            TableRelation = Item;
         }
         field(10; FilterTxt; Blob)
         {
