@@ -110,6 +110,13 @@ page 50203 "AF Sales Order"
                     AboutTitle = 'When is payment due?';
                     AboutText = 'When you post an order, the invoice gets it''s due date. You can set default due dates for orders by assigning payment terms to customers.';
                 }
+                //Atul
+                field("Business Hours"; Rec."Business Hours")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                //Atul
                 field("Shipment Date"; Rec."Shipment Date")
                 {
                     ApplicationArea = Basic, Suite;
@@ -209,26 +216,9 @@ page 50203 "AF Sales Order"
                             IsShipToCountyVisible := FormatAddress.UseCounty(Rec."Ship-to Country/Region Code");
                         end;
                     }
-                    //SS
-                    field("Customer Comment"; Rec."Customer Comment")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Customer Comment';
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies additional Customer Specific information given by the customer';
-                    }
-                    field("Business Hours"; Rec."Business Hours")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Business Hours';
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies additional Customer Specific information given by the customer';
-                    }
-                    //SS
-                }
 
+
+                }
 
             }
             // group(Search)
@@ -375,7 +365,7 @@ page 50203 "AF Sales Order"
 
 
             }
-            //AK
+            //Atul
             group(Payment)
             {
                 Caption = 'Payment';
@@ -406,22 +396,54 @@ page 50203 "AF Sales Order"
                     RunPageLink = "Bill-to Customer No." = field("Bill-to Customer No.");
                 }
             }
-            //SS
-            group("Counter Sales Transfer ")
+            //Atul
+            group(Warehouse)
             {
-                Caption = 'Counter Sales';
-                Image = Sales;
-
-                action(aMoveToCounterSales)
+                Caption = 'Warehouse';
+                Image = Warehouse;
+                action("Create Inventor&y Put-away/Pick")
                 {
-                    Caption = 'Move to Counter Sales';
-                    ApplicationArea = All;
-                    Image = SalesShipment;
-                    ToolTip = 'Moves the order details to the Counter Sales Order for processing.';
-                    RunObject = page "IWX POS Sales Order";
-                    RunPageLink = "Bill-to Customer No." = field("Bill-to Customer No.");
+                    AccessByPermission = TableData "Posted Invt. Pick Header" = R;
+                    ApplicationArea = Warehouse;
+                    Caption = 'Create Inventor&y Put-away/Pick';
+                    Ellipsis = true;
+                    Image = CreateInventoryPickup;
+                    ToolTip = 'Create an inventory put-away or inventory pick to handle items on the document according to a basic warehouse configuration that does not require warehouse receipt or shipment documents.';
+
+                    trigger OnAction()
+                    begin
+                        Rec.PerformManualRelease();
+                        Rec.CreateInvtPutAwayPick();
+
+                        if not Rec.Find('=><') then
+                            Rec.Init();
+                    end;
+                }
+                action("Create &Warehouse Shipment")
+                {
+                    AccessByPermission = TableData "Warehouse Shipment Header" = R;
+                    ApplicationArea = Warehouse;
+                    Caption = 'Create &Warehouse Shipment';
+                    Image = NewShipment;
+                    ToolTip = 'Create a warehouse shipment to start a pick a ship process according to an advanced warehouse configuration.';
+
+                    trigger OnAction()
+                    var
+                        GetSourceDocOutbound: Codeunit "Get Source Doc. Outbound";
+                    begin
+
+                        Rec.PerformManualRelease();
+
+                        case Rec."Shipment Method Code" of
+                            'Will':
+                                GetSourceDocOutbound.CreateFromSalesOrder(Rec);
+                        end;
+                        if not Rec.Find('=><') then
+                            Rec.Init();
+                    end;
                 }
             }
+            //Atul
             group(Documents)
             {
                 Caption = 'Documents';
@@ -890,6 +912,37 @@ page 50203 "AF Sales Order"
                     }
                 }
             }
+            group("Counter Sales Transfer ")
+            {
+                Caption = 'Counter Sales';
+                Image = Sales;
+
+                action(MoveToCounterSales)
+                {
+                    Caption = 'Move to Counter Sales';
+                    ApplicationArea = All;
+                    Image = SalesShipment;
+                    ToolTip = 'Moves the order details to the Counter Sales Order for processing.';
+
+                    trigger OnAction()
+                    var
+
+                        AFOrderHeader: Record "Sales Header";
+                        AFOrderLine: Record "Sales Line";
+                    begin
+                        if not AFOrderHeader.Get(Rec."No.") then
+                            Error('Sales Order not found.');
+                        //  Update the Sales Order Type or Status to Counter Sales Order
+                        AFOrderHeader."Document Type" := AFOrderHeader."Document Type"::Order;  // Ensure it's an Order
+                                                                                                //  AFOrderHeader."Order Type" := 'Counter Sales'; // Assuming you have a field to differentiate (replace with actual field name)
+                        AFOrderHeader."External Document No." := 'Counter Sales';
+                        AFOrderHeader.Modify();
+                        //  Open Counter Sales Order Page for review
+                        Page.Run(Page::"IWX POS Sales Order", AFOrderHeader);
+                    end;
+                }
+            }
+
         }
 
         area(reporting)
@@ -962,7 +1015,7 @@ page 50203 "AF Sales Order"
                 {
                 }
             }
-            //AK
+            //Atul
             group(Payments)
             {
                 Caption = 'Payment';
@@ -976,17 +1029,7 @@ page 50203 "AF Sales Order"
                 {
                 }
             }
-            //SS
-            group(CS_Submit)
-            {
-                Caption = 'CS Submit';
-                actionref(aaMoveToCounterSales_Promoted; aMoveToCounterSales)
-                {
-                }
-
-            }
-            // 
-
+            //Atul
             group(Category_Category7)
             {
                 Caption = 'Prepare', Comment = 'Generated from the PromotedActionCategories property index 6.';
