@@ -1,7 +1,7 @@
 tableextension 50200 "AF Sales Header Ext" extends "Sales Header"
 {
     //SS
-    fields
+  /*  fields
     {
         field(70000; "Customer Comment"; Text[250])
         {
@@ -18,8 +18,27 @@ tableextension 50200 "AF Sales Header Ext" extends "Sales Header"
         {
             DataClassification = ToBeClassified;
         }
-    }//SS
+    }//SS*\
+  //Atul
+    fields
+    {
+        field(50100; "Business Hours"; Text[50])
+        {
 
+        }
+        modify("Sell-to Customer No.")
+        {
+            trigger OnAfterValidate()
+            var
+                RecCustomer: Record Customer;
+            begin
+                if RecCustomer.Get("Sell-to Customer No.") then begin
+                    Validate("Business Hours", RecCustomer."Business Hours");
+                end;
+            end;
+        }
+    }
+    //Atul
 
 
     trigger OnAfterDelete()
