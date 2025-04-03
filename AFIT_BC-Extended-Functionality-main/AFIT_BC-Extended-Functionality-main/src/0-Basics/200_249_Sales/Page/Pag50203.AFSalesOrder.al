@@ -110,13 +110,13 @@ page 50203 "AF Sales Order"
                     AboutTitle = 'When is payment due?';
                     AboutText = 'When you post an order, the invoice gets it''s due date. You can set default due dates for orders by assigning payment terms to customers.';
                 }
-                //Atul
+                //AK
                 field("Business Hours"; Rec."Business Hours")
                 {
                     ApplicationArea = All;
                     Editable = false;
                 }
-                //Atul
+                //AK
                 field("Shipment Date"; Rec."Shipment Date")
                 {
                     ApplicationArea = Basic, Suite;
@@ -365,7 +365,7 @@ page 50203 "AF Sales Order"
 
 
             }
-            //Atul
+            //AK
             group(Payment)
             {
                 Caption = 'Payment';
@@ -396,7 +396,7 @@ page 50203 "AF Sales Order"
                     RunPageLink = "Bill-to Customer No." = field("Bill-to Customer No.");
                 }
             }
-            //Atul
+            //AK
             group(Warehouse)
             {
                 Caption = 'Warehouse';
@@ -443,7 +443,7 @@ page 50203 "AF Sales Order"
                     end;
                 }
             }
-            //Atul
+            //AK
             group(Documents)
             {
                 Caption = 'Documents';
@@ -1015,7 +1015,7 @@ page 50203 "AF Sales Order"
                 {
                 }
             }
-            //Atul
+            //AK
             group(Payments)
             {
                 Caption = 'Payment';

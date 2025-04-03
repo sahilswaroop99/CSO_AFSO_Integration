@@ -42,6 +42,8 @@ page 50206 "AF SalesOrder Item Search"
                     begin
                         Rec.Model := '';
                     end;
+
+
                 }
                 field(Model; Rec.Model)
                 { ApplicationArea = all; }

@@ -9,15 +9,16 @@ table 50200 "AF SalesOrder Item Filters"
         {
             Caption = 'Order No';
         }
+
         field(2; Make; Code[20])
         {
             TableRelation = "AF Vehicle Make";
         }
-        field(3; Model; Code[20])//Atul
+        field(3; Model; Code[20])//Atul//
         {
             TableRelation = "AF Vehicle Model";
         }
-        field(4; Year; code[4])//Atul
+        field(4; Year; code[4])//Atul//
         {
             TableRelation = AFMakeModelYearLookup.Year;
             ValidateTableRelation = false;

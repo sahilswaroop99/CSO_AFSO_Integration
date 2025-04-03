@@ -1,25 +1,24 @@
 tableextension 50200 "AF Sales Header Ext" extends "Sales Header"
 {
     //SS
-  /*  fields
-    {
-        field(70000; "Customer Comment"; Text[250])
-        {
+    /*  fields
+      {
+          field(70000; "Customer Comment"; Text[250])
+          {
 
-            DataClassification = CustomerContent;
-        }
+              DataClassification = CustomerContent;
+          }
 
-        field(70001; "Business Hours"; Text[250])
-        {
-            DataClassification = CustomerContent;
-        }
+          field(70001; "Business Hours"; Text[250])
+          {
+              DataClassification = CustomerContent;
+          }
 
-        field(70002; "PartNumber"; Code[20])
-        {
-            DataClassification = ToBeClassified;
-        }
-    }//SS*\
-  //Atul
+          field(70002; "PartNumber"; Code[20])
+          {
+              DataClassification = ToBeClassified;
+          }
+      }//SS*/
     fields
     {
         field(50100; "Business Hours"; Text[50])
@@ -39,7 +38,6 @@ tableextension 50200 "AF Sales Header Ext" extends "Sales Header"
         }
     }
     //Atul
-
 
     trigger OnAfterDelete()
     var
